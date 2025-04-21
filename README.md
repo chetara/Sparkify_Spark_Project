@@ -208,6 +208,10 @@ Performed joins on song == title and length == duration
 
 Generated songplay_id with monotonically_increasing_id()
 
+## 🧪 Data Validation (Jupyter Notebook)
+
+Use [`sparkify_tests.ipynb`](sparkify_tests.ipynb) to validate and explore transformed data using PySpark interactively.
+
 Wrote to outputs/songplays/
 ## 🙌 Author
 Built by @chetara
