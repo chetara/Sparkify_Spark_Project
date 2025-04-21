@@ -23,6 +23,25 @@ Sparkify_spark_project/
 └── README.md              # This file
 
 ``` 
+# ⚙️ Spark Architecture Behind This ETL Project
+
+This ETL pipeline is powered by **Apache Spark**, a distributed data processing engine. Even though this project runs locally, it uses the **same execution model** that powers Spark on clusters like AWS EMR, Databricks, and Hadoop YARN.
+
+---
+
+## 🧠 What Is Happening Under the Hood?
+
+### ✅ Components Used by Spark:
+
+| Component       | Role                                                                 |
+|----------------|----------------------------------------------------------------------|
+| **Driver**      | Coordinates the job, builds the DAG, sends tasks to executors        |
+| **Executors**   | Perform the actual data processing (reading, filtering, writing)     |
+| **Cluster Manager** | Manages resources. In this project, it's `local[*]` (your own machine) |
+
+```python
+spark = SparkSession.builder.appName("Sparkify ETL").getOrCreate()
+
 
 ## 🚀 What It Does
 ✅ Reads raw JSON files of song and log data
@@ -106,3 +125,7 @@ file_paths = [f.replace("\\", "/") for f in file_paths]
 df = spark.read.json(file_paths)
 
 ```
+
+## 🙌 Author
+Built by @chetara
+Inspired by the Udacity Data Engineer Nanodegree Sparkify project.
