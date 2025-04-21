@@ -21,7 +21,8 @@ Sparkify_spark_project/
 ├── requirements.txt
 └── README.md
 
-🚀 What It Does
+
+##  🚀 What It Does
 Reads raw JSON files of song and log data
 
 Cleans and transforms them using PySpark
@@ -34,13 +35,13 @@ artists
 
 users
 
-time
+## time
 
 songplays
 
 Outputs results to parquet files in /outputs
 
-🛠️ Technologies Used
+## Technologies Used
 Python 3.10+
 
 PySpark 3.x
