@@ -62,3 +62,47 @@ java.lang.UnsatisfiedLinkError: org.apache.hadoop.io.nativeio.NativeIO$Windows.a
 ✅ Solution
 
 ```
+
+# ✅ Step-by-Step Fix:
+Download winutils.exe
+
+Download: winutils.exe (Hadoop 3.3.1)
+
+Create Hadoop Directory
+
+
+``` bash
+
+C:\hadoop\bin\
+
+``` 
+
+Place the downloaded file
+
+
+``` bash
+
+C:\hadoop\bin\winutils.exe
+
+```
+Set Environment Variables in Python
+
+
+``` python
+
+import os
+os.environ["HADOOP_HOME"] = "C:/hadoop"
+os.environ["SPARK_SUBMIT_OPTS"] = "-Dhadoop.home.dir=C:/hadoop"
+
+```
+Bypass native file globbing using Python
+
+
+``` python
+
+import glob
+file_paths = glob.glob("data/song_data/*/*/*/*.json")
+file_paths = [f.replace("\\", "/") for f in file_paths]
+df = spark.read.json(file_paths)
+
+```
