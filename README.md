@@ -125,7 +125,90 @@ file_paths = [f.replace("\\", "/") for f in file_paths]
 df = spark.read.json(file_paths)
 
 ```
+## 🧪 ETL Process Breakdown
+This project follows a classic ETL pipeline using Apache Spark. Here's a detailed breakdown of each phase:
 
+# Step 1: Load Raw Data
+➤ What
+Load raw song and log data (JSON format) into Spark DataFrames.
+
+➤ Why
+To perform distributed processing and transformation at scale, Spark needs structured DataFrames.
+
+➤ How
+``` python
+song_df = spark.read.json(song_files)
+log_df = spark.read.json(log_files).filter(col("page") == "NextSong")
+Used Python’s glob module to read file paths (helps on Windows)
+```
+
+Filtered log_df by page == "NextSong" to only include song play events
+
+Saved raw datasets to Parquet (outputs/raw_logs/, outputs/raw_songs/)
+
+# Step 2: Transform Song & Artist Tables
+➤ What
+Extract clean, structured dimension tables: songs and artists.
+
+➤ Why
+To enable analysis by song, artist, and metadata like duration, year, etc.
+
+➤ How
+``` python
+songs_table = song_df.select("song_id", "title", "artist_id", "year", "duration").dropDuplicates()
+artists_table = song_df.select("artist_id", "artist_name", "artist_location", ...).dropDuplicates()
+``` 
+Ensured uniqueness with .dropDuplicates()
+
+Wrote to outputs/songs/ and outputs/artists/
+
+# Step 3: Transform Users & Time Tables
+➤ What
+Create users and time tables from the log dataset.
+
+➤ Why
+Useful for analyzing user behavior and session time trends.
+
+➤ How
+``` python
+
+users_table = log_df.select("userId", "firstName", "lastName", ...).dropDuplicates()
+
+get_timestamp = udf(lambda ts: datetime.fromtimestamp(ts / 1000))
+log_df = log_df.withColumn("start_time", get_timestamp("ts"))
+time_table = log_df.select("start_time").withColumn("hour", hour("start_time"))...
+```
+Used Spark’s udf to convert timestamps
+
+Extracted time components: hour, day, week, etc.
+
+Saved to outputs/users/ and outputs/time/
+
+# Step 4: Build Songplays Fact Table
+➤ What
+Create the central fact table songplays by joining logs with songs and artists.
+
+➤ Why
+To enable deep analysis like:
+
+Top songs/artists by plays
+
+User behavior over time
+
+Song popularity by location/session
+
+➤ How
+``` python
+
+songplays_df = log_df.join(songs_df, ...).join(artists_df, ...)
+
+songplays_df = songplays_df.withColumn("songplay_id", monotonically_increasing_id())
+Performed joins on song == title and length == duration
+```
+
+Generated songplay_id with monotonically_increasing_id()
+
+Wrote to outputs/songplays/
 ## 🙌 Author
 Built by @chetara
 Inspired by the Udacity Data Engineer Nanodegree Sparkify project.
