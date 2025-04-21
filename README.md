@@ -128,7 +128,7 @@ df = spark.read.json(file_paths)
 ## 🧪 ETL Process Breakdown
 This project follows a classic ETL pipeline using Apache Spark. Here's a detailed breakdown of each phase:
 
-# Step 1: Load Raw Data
+## Step 1: Load Raw Data
 ➤ What
 Load raw song and log data (JSON format) into Spark DataFrames.
 
@@ -146,7 +146,7 @@ Filtered log_df by page == "NextSong" to only include song play events
 
 Saved raw datasets to Parquet (outputs/raw_logs/, outputs/raw_songs/)
 
-# Step 2: Transform Song & Artist Tables
+### Step 2: Transform Song & Artist Tables
 ➤ What
 Extract clean, structured dimension tables: songs and artists.
 
@@ -162,7 +162,7 @@ Ensured uniqueness with .dropDuplicates()
 
 Wrote to outputs/songs/ and outputs/artists/
 
-# Step 3: Transform Users & Time Tables
+### Step 3: Transform Users & Time Tables
 ➤ What
 Create users and time tables from the log dataset.
 
@@ -184,7 +184,7 @@ Extracted time components: hour, day, week, etc.
 
 Saved to outputs/users/ and outputs/time/
 
-# Step 4: Build Songplays Fact Table
+### Step 4: Build Songplays Fact Table
 ➤ What
 Create the central fact table songplays by joining logs with songs and artists.
 
