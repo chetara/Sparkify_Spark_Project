@@ -41,7 +41,7 @@ This ETL pipeline is powered by **Apache Spark**, a distributed data processing 
 
 ```python
 spark = SparkSession.builder.appName("Sparkify ETL").getOrCreate()
-
+```
 
 ## 🚀 What It Does
 ✅ Reads raw JSON files of song and log data
